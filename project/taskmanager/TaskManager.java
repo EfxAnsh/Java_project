@@ -11,7 +11,7 @@ public class TaskManager {
 
     public TaskManager() {
         this.tasks = loadTasks();
-        removeExpiredTasks(); // ✅ Remove expired tasks on startup
+        removeExpiredTasks(); 
     }
 
     public void addTask(Task task) {
@@ -116,7 +116,6 @@ public class TaskManager {
         return loadedTasks;
     }
 
-    // 🔹 **New Method: Prints tasks in a formatted table**
     private void printTaskTable(String title, List<Task> taskList) {
         System.out.println("\n" + title);
         System.out.println("───────────────────────────────────────────────");

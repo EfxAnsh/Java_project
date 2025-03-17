@@ -14,7 +14,7 @@ public class ReminderService implements Runnable {
     public void run() {
         while (running) {
             try {
-                Thread.sleep(60000); // ✅ Check every 60 seconds (1 minute)
+                Thread.sleep(60000); 
                 checkDeadlines();
             } catch (InterruptedException e) {
                 System.out.println("Reminder Service Interrupted.");

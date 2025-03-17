@@ -9,8 +9,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         TaskManager manager = new TaskManager();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-        // 🔹 Step 1: Task Creation Loop
         while (true) {
             System.out.println("\n────────────────────────────────");
             System.out.println("📌 Enter Task Details:");
@@ -53,8 +51,6 @@ public class Main {
                 break;
             }
         }
-
-        // 🔹 Step 2: Task Menu
         while (true) {
             System.out.println("\n══════════════════════════════════════════");
             System.out.println("📌 TASK MANAGER MENU:");
@@ -85,7 +81,7 @@ public class Main {
         }
     }
 
-    // 🔹 **New Method: Handles Safe Integer Input with Validation**
+ 
     private static int getIntInput(Scanner scanner, String message, int min, int max) {
         int value;
         while (true) {
