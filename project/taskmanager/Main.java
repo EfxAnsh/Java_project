@@ -11,13 +11,13 @@ public class Main {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         while (true) {
             System.out.println("\n────────────────────────────────");
-            System.out.println("📌 Enter Task Details:");
+            System.out.println(" Enter Task Details:");
             System.out.println("────────────────────────────────");
 
             System.out.print("Description: ");
             String description = scanner.nextLine().trim();
             if (description.isEmpty()) {
-                System.out.println("❌ Error: Description cannot be empty.");
+                System.out.println(" Error: Description cannot be empty.");
                 continue;
             }
 
@@ -26,11 +26,11 @@ public class Main {
             try {
                 dueDate = LocalDateTime.parse(scanner.nextLine().trim(), formatter);
                 if (dueDate.isBefore(LocalDateTime.now())) {
-                    System.out.println("❌ Error: Due date must be in the future!");
+                    System.out.println(" Error: Due date must be in the future!");
                     continue;
                 }
             } catch (Exception e) {
-                System.out.println("❌ Invalid date format. Use yyyy-MM-dd HH:mm");
+                System.out.println(" Invalid date format. Use yyyy-MM-dd HH:mm");
                 continue;
             }
 
@@ -95,6 +95,7 @@ public class Main {
                 }
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid input! Please enter a valid number.");
+                //COMPLETED
             }
         }
     }
