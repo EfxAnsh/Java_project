@@ -2,6 +2,7 @@ package project.taskmanager;
 
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -12,11 +13,13 @@ public class TaskManager {
     public TaskManager() {
         this.tasks = loadTasks();
         removeExpiredTasks(); 
+        startReminderService(); // Start reminder thread
     }
 
     public void addTask(Task task) {
         tasks.add(task);
         saveTasks();
+        scheduleReminder(task); // Schedule a reminder for this task
     }
 
     public void showTasks() {
@@ -105,6 +108,7 @@ public class TaskManager {
                 try {
                     Task task = Task.fromFileString(line);
                     loadedTasks.add(task);
+                    scheduleReminder(task); // Load tasks with reminders
                 } catch (InvalidTaskException e) {
                     System.out.println("Skipping invalid task entry: " + e.getMessage());
                 }
@@ -114,6 +118,46 @@ public class TaskManager {
         }
 
         return loadedTasks;
+    }
+
+    // 📌 Background thread to check for reminders every 1 minute
+    public void startReminderService() {
+        Thread reminderThread = new Thread(() -> {
+            while (true) {
+                try {
+                    checkForUpcomingTasks();
+                    Thread.sleep(60000); // Check every 1 minute
+                } catch (InterruptedException e) {
+                    System.out.println("Reminder service interrupted!");
+                }
+            }
+        });
+        reminderThread.setDaemon(true);
+        reminderThread.start();
+    }
+
+    private void checkForUpcomingTasks() {
+        LocalDateTime now = LocalDateTime.now();
+        for (Task task : tasks) {
+            if (!task.isExpired() && task.getDueDate().isBefore(now.plusMinutes(3))) {
+                System.out.println("\n⏳ Reminder: Task '" + task.getDescription() + "' is due soon!");
+            }
+        }
+    }
+
+    // 📌 Schedule a one-time reminder when adding a task
+    private void scheduleReminder(Task task) {
+        long delay = task.getDueDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() - System.currentTimeMillis();
+        
+        if (delay > 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    System.out.println("\n⏳ Reminder: Task '" + task.getDescription() + "' is due now!");
+                }
+            }, delay);
+        }
     }
 
     private void printTaskTable(String title, List<Task> taskList) {

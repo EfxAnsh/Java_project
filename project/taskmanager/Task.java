@@ -14,7 +14,7 @@ public abstract class Task {
         if (description == null || description.trim().isEmpty()) {
             throw new InvalidTaskException("Description cannot be empty.");
         }
-        if (dueDate.isBefore(LocalDateTime.now())) {
+        if (dueDate.isBefore(LocalDateTime.now())) {    
             throw new InvalidTaskException("Due date must be in the future.");
         }
 
